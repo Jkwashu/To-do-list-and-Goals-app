@@ -40,7 +40,7 @@ class _ToDoDialogState extends State<ToDoDialog> {
       ),
       actions: <Widget>[
         ElevatedButton(
-          key: const Key("OkButton"),
+          key: const Key("OKButton"),
           style: yesStyle,
           child: const Text('OK'),
           onPressed: () {
