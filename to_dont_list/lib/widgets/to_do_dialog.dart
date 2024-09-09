@@ -44,9 +44,13 @@ class _ToDoDialogState extends State<ToDoDialog> {
           style: yesStyle,
           child: const Text('OK'),
           onPressed: () {
-            setState(() {
-              Navigator.pop(context);
-            });
+            // Ensure the input isn't empty before we add
+            if (valueText.isNotEmpty) {
+              setState(() {
+                widget.onListAdded(valueText, _inputController);
+                Navigator.pop(context);
+              });
+            }
           },
         ),
 
