@@ -19,9 +19,9 @@ class _ToDoDialogState extends State<ToDoDialog> {
   // Dialog with text from https://www.appsdeveloperblog.com/alert-dialog-with-a-text-field-in-flutter/
   final TextEditingController _inputController = TextEditingController();
   final ButtonStyle yesStyle = ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.red);
-  final ButtonStyle noStyle = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.green);
+  final ButtonStyle noStyle = ElevatedButton.styleFrom(
+      textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.red);
 
   String valueText = "";
 
@@ -40,9 +40,9 @@ class _ToDoDialogState extends State<ToDoDialog> {
       ),
       actions: <Widget>[
         ElevatedButton(
-          key: const Key("CancelButton"),
+          key: const Key("OkButton"),
           style: yesStyle,
-          child: const Text('Cancel'),
+          child: const Text('OK'),
           onPressed: () {
             setState(() {
               Navigator.pop(context);
@@ -55,7 +55,7 @@ class _ToDoDialogState extends State<ToDoDialog> {
           valueListenable: _inputController,
           builder: (context, value, child) {
             return ElevatedButton(
-              key: const Key("OkButton"),
+              key: const Key("CancelButton"),
               style: noStyle,
               onPressed: value.text.isNotEmpty
                   ? () {
@@ -65,7 +65,7 @@ class _ToDoDialogState extends State<ToDoDialog> {
                       });
                     }
                   : null,
-              child: const Text('OK'),
+              child: const Text('Cancel'),
             );
           },
         ),
