@@ -54,7 +54,7 @@ class ToDoListItem extends StatelessWidget {
         child: Text(item.abbrev()), // Change item.name to item.abbrev()
       ),
       title: Text(
-        item.abbrev(),
+        item.name,
         style: _getTextStyle(context),
       ),
     );
