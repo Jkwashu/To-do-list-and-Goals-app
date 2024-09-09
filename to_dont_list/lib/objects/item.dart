@@ -5,7 +5,8 @@ class Item {
 
   final String name;
 
+  // Fixed the abbreviation to return only the first letter
   String abbrev() {
-    return name.substring(0, 2);
+    return name.isNotEmpty ? name[0] : '';
   }
 }
