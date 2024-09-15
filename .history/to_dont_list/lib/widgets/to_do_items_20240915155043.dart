@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/Toy.dart';
 
-typedef ToDoListChangedCallback = Function(Toy toy, bool completed);
-typedef ToDoListRemovedCallback = Function(Toy toy);
+typedef ToDoListChangedCallback = Function(Toy item, bool completed);
+typedef ToDoListRemovedCallback = Function(Toy item);
 
 class ToDoListItem extends StatelessWidget {
   ToDoListItem(
@@ -51,6 +51,7 @@ class ToDoListItem extends StatelessWidget {
           : null,
       leading: CircleAvatar(
         backgroundColor: _getColor(context),
+        child: Text(toy.abbrev()),
       ),
       title: Text(
         toy.name,

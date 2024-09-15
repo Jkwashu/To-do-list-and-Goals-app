@@ -1,5 +1,5 @@
 class Toy {
-  const Toy({required this.name});
+  Toy({required this.name});
 
   final String name;
   // // bool got = false;

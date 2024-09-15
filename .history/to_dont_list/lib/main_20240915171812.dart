@@ -1,7 +1,7 @@
 // Started with https://docs.flutter.dev/development/ui/widgets-intro
 import 'package:flutter/material.dart';
 // import 'package:to_dont_list/objects/item.dart';
-import 'package:to_dont_list/objects/Toy.dart';
+import 'package:to_dont_list/objects/toy.dart';
 import 'package:to_dont_list/widgets/to_do_items.dart';
 import 'package:to_dont_list/widgets/to_do_dialog.dart';
 
@@ -13,7 +13,7 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  final List<Toy> items = [Toy(name: "Optimus Prime")];
+  final List<Toy> items = [const Toy(name: "Optimus Prime")];
   final _itemSet = <Toy>{};
 
   void _handleListChanged(Toy item, bool completed) {

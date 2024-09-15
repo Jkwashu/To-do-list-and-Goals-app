@@ -1,7 +1,6 @@
 // Started with https://docs.flutter.dev/development/ui/widgets-intro
 import 'package:flutter/material.dart';
-// import 'package:to_dont_list/objects/item.dart';
-import 'package:to_dont_list/objects/Toy.dart';
+import 'package:to_dont_list/objects/item.dart';
 import 'package:to_dont_list/widgets/to_do_items.dart';
 import 'package:to_dont_list/widgets/to_do_dialog.dart';
 
@@ -13,10 +12,10 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  final List<Toy> items = [Toy(name: "Optimus Prime")];
-  final _itemSet = <Toy>{};
+  final List<Item> items = [const Item(name: "add more todos")];
+  final _itemSet = <Item>{};
 
-  void _handleListChanged(Toy item, bool completed) {
+  void _handleListChanged(Item item, bool completed) {
     setState(() {
       // When a user changes what's in the list, you need
       // to change _itemSet inside a setState call to
@@ -37,7 +36,7 @@ class _ToDoListState extends State<ToDoList> {
     });
   }
 
-  void _handleDeleteItem(Toy item) {
+  void _handleDeleteItem(Item item) {
     setState(() {
       print("Deleting item");
       items.remove(item);
@@ -47,7 +46,7 @@ class _ToDoListState extends State<ToDoList> {
   void _handleNewItem(String itemText, TextEditingController textController) {
     setState(() {
       print("Adding new item");
-      Toy item = Toy(name: itemText);
+      Item item = Item(name: itemText);
       items.insert(0, item);
       textController.clear();
     });
