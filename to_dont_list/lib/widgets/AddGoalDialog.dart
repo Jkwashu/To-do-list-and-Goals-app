@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 
-typedef GoalListAddedCallback = Function(
-    String goalText, TextEditingController textController);
-
 class AddGoalDialog extends StatefulWidget {
-  const AddGoalDialog({
-    required this.onGoalAdded,
-    super.key,
-  });
+  final Function(String, String, TextEditingController) onGoalAdded;
 
-  final GoalListAddedCallback onGoalAdded;
+  AddGoalDialog({required this.onGoalAdded});
 
   @override
   State<AddGoalDialog> createState() => _AddGoalDialogState();
@@ -17,38 +11,45 @@ class AddGoalDialog extends StatefulWidget {
 
 class _AddGoalDialogState extends State<AddGoalDialog> {
   final TextEditingController _goalController = TextEditingController();
-  String goalText = "";
+  final TextEditingController _deadlineController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add New Goal'),
-      content: TextField(
-        onChanged: (value) {
-          setState(() {
-            goalText = value;
-          });
-        },
-        controller: _goalController,
-        decoration: const InputDecoration(hintText: "Enter goal here"),
+      title: Text('Add New Goal'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _goalController,
+            decoration: InputDecoration(hintText: 'Goal Name'),
+          ),
+          TextField(
+            controller: _deadlineController,
+            decoration: InputDecoration(hintText: 'Deadline (YYYY-MM-DD)'),
+          ),
+        ],
       ),
-      actions: <Widget>[
-        ElevatedButton(
-          onPressed: goalText.isNotEmpty
-              ? () {
-                  widget.onGoalAdded(goalText, _goalController);
-                  Navigator.pop(context);
-                }
-              : null,
-          child: const Text('Add'),
-        ),
-        ElevatedButton(
+      actions: [
+        TextButton(
           onPressed: () {
-            Navigator.pop(context);
+            widget.onGoalAdded(
+              _goalController.text,
+              _deadlineController.text,
+              _goalController,
+            );
+            Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: const Text('Add'),
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _goalController.dispose();
+    _deadlineController.dispose();
+    super.dispose();
   }
 }

@@ -16,7 +16,9 @@ class ToDoGoalApp extends StatefulWidget {
 
 class _ToDoGoalAppState extends State<ToDoGoalApp> {
   final List<Item> items = [const Item(name: "add more goals")];
-  final List<Goal> goals = [const Goal(name: "Finish Flutter project")];
+  final List<Goal> goals = [
+    Goal(name: "Finish Flutter project", deadline: "2024-9-16")
+  ];
   final _itemSet = <Item>{};
   final _goalSet = <Goal>{};
 
@@ -80,9 +82,10 @@ class _ToDoGoalAppState extends State<ToDoGoalApp> {
     });
   }
 
-  void _handleNewGoal(String goalText, TextEditingController textcontroller) {
+  void _handleNewGoal(
+      String goalText, String deadline, TextEditingController textcontroller) {
     setState(() {
-      Goal goal = Goal(name: goalText);
+      Goal goal = Goal(name: goalText, deadline: deadline);
       goals.insert(0, goal);
       textcontroller.clear();
     });
