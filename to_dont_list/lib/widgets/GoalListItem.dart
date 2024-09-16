@@ -35,7 +35,7 @@ class GoalListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        onListChanged(goal, completed);
+        onListChanged(goal, !completed); //Toggle Completion status
       },
       onLongPress: completed
           ? () {

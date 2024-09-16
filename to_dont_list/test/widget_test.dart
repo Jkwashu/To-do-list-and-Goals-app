@@ -30,6 +30,28 @@ void main() {
   });
 
   group('GoalListItem Widget Tests', () {
+    // Test that tapping GoalListItem toggles completion status
+    testWidgets('Tapping GoalListItem toggles completion status',
+        (tester) async {
+      bool completed = false;
+      final goal = Goal(name: 'Test Goal', deadline: '2024-12-31');
+
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: GoalListItem(
+            goal: goal,
+            completed: completed,
+            onListChanged: (goal, isCompleted) {
+              completed = isCompleted;
+            },
+            onDeleteGoal: (_) {},
+          ),
+        ),
+      ));
+
+      await tester.tap(find.byType(ListTile));
+      expect(completed, true); // Verify completion status changed
+    });
     // Test that GoalListItem renders correctly
     testWidgets('GoalListItem has a text', (tester) async {
       await tester.pumpWidget(MaterialApp(
@@ -133,6 +155,27 @@ void main() {
       // Verify that error is shown for missing deadline
       expect(find.text("Please set a deadline"), findsOneWidget);
     });
+
+    // Test that goal input dialog shows error for missing goal name or deadline
+    testWidgets('AddGoalDialog shows error for missing goal name or deadline',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: ToDoGoalApp())));
+
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pump(); // Open the dialog
+
+      // Enter goal name but not deadline
+      await tester.enterText(find.byType(TextField).first, 'New Goal');
+      await tester.pump();
+
+      // Attempt to press Add without setting the deadline
+      await tester.tap(find.text('Add'));
+      await tester.pump();
+
+      // Verify that error message is shown for missing deadline
+      expect(find.text("Please enter both a goal and a deadline."),
+          findsOneWidget);
+    });
   });
 
   group('Goal Integration Tests', () {
@@ -161,6 +204,27 @@ void main() {
       final listItemFinder = find.byType(GoalListItem);
 
       expect(listItemFinder, findsNWidgets(2)); // Including the default goal
+    });
+    // Test that long pressing a completed goal deletes it
+    testWidgets('Long pressing a completed goal deletes it', (tester) async {
+      bool deleted = false;
+      final goal = Goal(name: 'Completed Goal', deadline: '2024-12-31');
+
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: GoalListItem(
+            goal: goal,
+            completed: true,
+            onListChanged: (_, __) {},
+            onDeleteGoal: (_) {
+              deleted = true;
+            },
+          ),
+        ),
+      ));
+
+      await tester.longPress(find.byType(ListTile));
+      expect(deleted, true); // Verify that the goal was deleted
     });
 
     // Test that deleting a goal works
