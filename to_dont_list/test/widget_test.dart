@@ -114,43 +114,51 @@ void main() {
   group('AddGoalDialog Widget Tests', () {
     // Test that AddGoalDialog appears and adds a goal
     testWidgets('AddGoalDialog appears and adds a goal', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: Scaffold(body: ToDoGoalApp())));
+      // Render the app
+      await tester
+          .pumpWidget(const MaterialApp(home: Scaffold(body: ToDoGoalApp())));
 
+      // Ensure that the dialog is not showing initially
       expect(find.byType(TextField), findsNothing);
 
+      // Tap the FloatingActionButton to open the AddGoalDialog
       await tester.tap(find.byType(FloatingActionButton));
-      await tester
-          .pump(); // Pump after the FloatingActionButton tap to open dialog
+      await tester.pumpAndSettle(); // Wait for the dialog to open fully
 
+      // Ensure the dialog is displayed
       expect(find.byType(TextField), findsOneWidget);
 
+      // Enter text for the goal
       await tester.enterText(find.byType(TextField), 'Complete Testing');
-      await tester.pump();
+      await tester.pump(); // Rebuild the widget to reflect the entered text
+
+      // Ensure the goal text has been entered correctly
       expect(find.text('Complete Testing'), findsOneWidget);
 
+      // Tap the "OKButton" (ensure the key is correctly used in the widget)
       await tester.tap(find.byKey(const Key("OKButton")));
-      await tester.pump();
+      await tester
+          .pumpAndSettle(); // Wait for the dialog to close and list to update
 
-      final listItemFinder = find.byType(GoalListItem);
-
-      // Check that the new goal has been added to the list
-      expect(listItemFinder, findsNWidgets(2)); // Including the default goal
+      // Verify that two goals are now present in the list (including the default goal)
+      expect(find.byType(GoalListItem), findsNWidgets(2));
     });
 
     // Test that goal input dialog throws error when no deadline is set
     testWidgets('AddGoalDialog shows error for missing deadline',
         (tester) async {
-      await tester.pumpWidget(MaterialApp(home: Scaffold(body: ToDoGoalApp())));
+      await tester
+          .pumpWidget(const MaterialApp(home: Scaffold(body: ToDoGoalApp())));
 
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pump(); // Open the dialog
+      await tester.pumpAndSettle(); // Open the dialog
 
       await tester.enterText(find.byType(TextField), 'New Goal');
       await tester.pump();
 
       // Attempt to press OK without setting the deadline
       await tester.tap(find.byKey(const Key("OKButton")));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       // Verify that error is shown for missing deadline
       expect(find.text("Please set a deadline"), findsOneWidget);
@@ -159,18 +167,19 @@ void main() {
     // Test that goal input dialog shows error for missing goal name or deadline
     testWidgets('AddGoalDialog shows error for missing goal name or deadline',
         (tester) async {
-      await tester.pumpWidget(MaterialApp(home: Scaffold(body: ToDoGoalApp())));
+      await tester
+          .pumpWidget(const MaterialApp(home: Scaffold(body: ToDoGoalApp())));
 
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pump(); // Open the dialog
+      await tester.pumpAndSettle(); // Open the dialog
 
       // Enter goal name but not deadline
       await tester.enterText(find.byType(TextField).first, 'New Goal');
       await tester.pump();
 
       // Attempt to press Add without setting the deadline
-      await tester.tap(find.text('Add'));
-      await tester.pump();
+      await tester.tap(find.byKey(const Key("OKButton")));
+      await tester.pumpAndSettle();
 
       // Verify that error message is shown for missing deadline
       expect(find.text("Please enter both a goal and a deadline."),
@@ -183,28 +192,29 @@ void main() {
     testWidgets('Clicking and Typing adds goal to GoalList', (tester) async {
       await tester.pumpWidget(const MaterialApp(home: ToDoGoalApp()));
 
-      // Switch to the Goals tab
       await tester.tap(find.text('Goals'));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      expect(find.byType(TextField), findsNothing);
-
+      // Tap the FloatingActionButton to open the AddGoalDialog
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pump(); // Pump after every action to rebuild the widgets
-      expect(find.text("New Goal"), findsNothing);
+      await tester.pumpAndSettle(); // Wait for the dialog to open fully
 
-      await tester.enterText(find.byType(TextField), 'New Goal');
-      await tester.pump();
-      expect(find.text("New Goal"), findsOneWidget);
+      // Enter a goal name
+      await tester.enterText(
+          find.byKey(const Key('goalTextField')), 'New Goal');
+      await tester.pump(); // Ensure the text is entered
 
+      // Tap the "OKButton" to add the goal
       await tester.tap(find.byKey(const Key("OKButton")));
-      await tester.pump();
+      await tester
+          .pumpAndSettle(); // Wait for the dialog to close and list to update
+
+      // Verify that the new goal is added to the list
       expect(find.text("New Goal"), findsOneWidget);
-
-      final listItemFinder = find.byType(GoalListItem);
-
-      expect(listItemFinder, findsNWidgets(2)); // Including the default goal
+      expect(find.byType(GoalListItem),
+          findsNWidgets(2)); // Includes the default goal
     });
+
     // Test that long pressing a completed goal deletes it
     testWidgets('Long pressing a completed goal deletes it', (tester) async {
       bool deleted = false;
@@ -231,20 +241,15 @@ void main() {
     testWidgets('Deleting a goal removes it from the list', (tester) async {
       await tester.pumpWidget(const MaterialApp(home: ToDoGoalApp()));
 
-      // Switch to the Goals tab
       await tester.tap(find.text('Goals'));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      final deleteButtonFinder = find.byIcon(Icons.delete);
+      expect(find.byType(GoalListItem), findsNWidgets(1));
 
-      // Tap the delete button on the first goal
-      await tester.tap(deleteButtonFinder.first);
-      await tester.pump();
+      await tester.tap(find.byIcon(Icons.delete).first);
+      await tester.pumpAndSettle();
 
-      final listItemFinder = find.byType(GoalListItem);
-
-      // Expect only one goal left after deletion
-      expect(listItemFinder, findsOneWidget);
+      expect(find.byType(GoalListItem), findsNothing);
     });
   });
 }

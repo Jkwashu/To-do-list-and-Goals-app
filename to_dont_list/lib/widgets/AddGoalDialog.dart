@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AddGoalDialog extends StatefulWidget {
   final Function(String, String, TextEditingController) onGoalAdded;
 
-  AddGoalDialog({required this.onGoalAdded});
+  const AddGoalDialog({super.key, required this.onGoalAdded});
 
   @override
   State<AddGoalDialog> createState() => _AddGoalDialogState();
@@ -17,17 +17,18 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add New Goal'),
+      title: const Text('Add New Goal'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _goalController,
-            decoration: InputDecoration(hintText: 'Goal Name'),
+            decoration: const InputDecoration(hintText: 'Goal Name'),
           ),
           TextField(
             controller: _deadlineController,
-            decoration: InputDecoration(hintText: 'Deadline (YYYY-MM-DD)'),
+            decoration:
+                const InputDecoration(hintText: 'Deadline (YYYY-MM-DD)'),
           ),
           if (_errorMessage != null)
             Padding(

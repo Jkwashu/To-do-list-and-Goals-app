@@ -11,7 +11,11 @@ class Goal {
     required this.deadline,
     this.completed = false,
     this.progress = 0.0,
-  }) : assert(deadline.isNotEmpty, 'Deadline cannot be empty');
+  }) {
+    if (deadline.isEmpty) {
+      throw ArgumentError('Deadline cannot be empty');
+    }
+  }
 
   //New abbrev class for goals
   String abbrev() {
