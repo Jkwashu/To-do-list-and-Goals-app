@@ -5,6 +5,7 @@ import 'package:to_dont_list/objects/goal.dart';
 import 'package:to_dont_list/widgets/to_do_items.dart';
 import 'package:to_dont_list/widgets/to_do_dialog.dart';
 import 'package:to_dont_list/widgets/GoalListItem.dart';
+import 'package:to_dont_list/widgets/AddGoalDialog.dart';
 
 class ToDoList extends StatefulWidget {
   const ToDoList({super.key});
