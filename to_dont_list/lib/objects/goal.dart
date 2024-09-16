@@ -30,14 +30,19 @@ class Goal {
 
   // A method to mark the goal as completed
   void markComplete() {
-    completed = true;
-    progress = 100.0;
+    if (!completed) {
+      completed = true;
+      progress = 100.0;
+    }
   }
 
   // A method to update the progress
-  void updateProgress(double newProgress) {
+  bool updateProgress(double newProgress) {
     if (newProgress >= 0.0 && newProgress <= 100.0) {
       progress = newProgress;
+      return true;
     }
+    print("Invalid progress value: $newProgress. Must be between 0 and 100.");
+    return false;
   }
 }
