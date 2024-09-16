@@ -13,6 +13,14 @@ class Goal {
     this.progress = 0.0,
   });
 
+  //New abbrev class for goals
+  String abbrev() {
+    if (name.isNotEmpty) {
+      return name[0];
+    }
+    return '';
+  }
+
   // A method to mark the goal as completed
   void markComplete() {
     completed = true;
