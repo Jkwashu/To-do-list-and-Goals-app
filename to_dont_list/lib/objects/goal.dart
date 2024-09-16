@@ -1,8 +1,8 @@
 // file to store new goal class
 
 class Goal {
-  final String name;
-  final String deadline; // Might switch to use DateTime
+  String name;
+  String deadline; // Might switch to use DateTime
   bool completed;
   double progress;
 
@@ -11,7 +11,7 @@ class Goal {
     required this.deadline,
     this.completed = false,
     this.progress = 0.0,
-  });
+  }) : assert(deadline.isNotEmpty, 'Deadline cannot be empty');
 
   //New abbrev class for goals
   String abbrev() {

@@ -12,6 +12,7 @@ class AddGoalDialog extends StatefulWidget {
 class _AddGoalDialogState extends State<AddGoalDialog> {
   final TextEditingController _goalController = TextEditingController();
   final TextEditingController _deadlineController = TextEditingController();
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +29,31 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
             controller: _deadlineController,
             decoration: InputDecoration(hintText: 'Deadline (YYYY-MM-DD)'),
           ),
+          if (_errorMessage != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                _errorMessage!,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () {
+            if (_goalController.text.isEmpty ||
+                _deadlineController.text.isEmpty) {
+              setState(() {
+                _errorMessage = 'Please enter both a goal and a deadline.';
+              });
+              return;
+            }
+            // Clear error if both fields are filled
+            setState(() {
+              _errorMessage = null;
+            });
+
             widget.onGoalAdded(
               _goalController.text,
               _deadlineController.text,
