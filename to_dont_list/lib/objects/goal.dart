@@ -19,10 +19,13 @@ class Goal {
 
   //New abbrev class for goals
   String abbrev() {
-    if (name.isNotEmpty) {
-      return name[0];
+    if (name.trim().isEmpty) {
+      return '';
     }
-    return '';
+    List<String> words = name.trim().split(' ');
+    String abbreviation = words.map((word) => word[0].toUpperCase()).join();
+
+    return abbreviation;
   }
 
   // A method to mark the goal as completed
