@@ -11,38 +11,26 @@ class Goal {
     required this.deadline,
     this.completed = false,
     this.progress = 0.0,
-  }) {
-    if (deadline.isEmpty) {
-      throw ArgumentError('Deadline cannot be empty');
-    }
-  }
+  }) : assert(deadline.isNotEmpty, 'Deadline cannot be empty');
 
   //New abbrev class for goals
   String abbrev() {
-    if (name.trim().isEmpty) {
-      return '';
+    if (name.isNotEmpty) {
+      return name[0];
     }
-    List<String> words = name.trim().split(' ');
-    String abbreviation = words.map((word) => word[0].toUpperCase()).join();
-
-    return abbreviation;
+    return '';
   }
 
   // A method to mark the goal as completed
   void markComplete() {
-    if (!completed) {
-      completed = true;
-      progress = 100.0;
-    }
+    completed = true;
+    progress = 100.0;
   }
 
   // A method to update the progress
-  bool updateProgress(double newProgress) {
+  void updateProgress(double newProgress) {
     if (newProgress >= 0.0 && newProgress <= 100.0) {
       progress = newProgress;
-      return true;
     }
-    print("Invalid progress value: $newProgress. Must be between 0 and 100.");
-    return false;
   }
 }
