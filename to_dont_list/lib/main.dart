@@ -17,7 +17,7 @@ class ToDoGoalApp extends StatefulWidget {
 class _ToDoGoalAppState extends State<ToDoGoalApp> {
   final List<Item> items = [const Item(name: "add more goals")];
   final List<Goal> goals = [
-    Goal(name: "Finish Flutter project", deadline: "2024-9-16")
+    Goal(name: "Finish Flutter project", deadline: DateTime(2024, 9, 16))
   ];
   final _itemSet = <Item>{};
   final _goalSet = <Goal>{};
@@ -26,18 +26,11 @@ class _ToDoGoalAppState extends State<ToDoGoalApp> {
 
   void _handleListChanged(Item item, bool completed) {
     setState(() {
-      // When a user changes what's in the list, you need
-      // to change _itemSet inside a setState call to
-      // trigger a rebuild.
-      // The framework then calls build, below,
-      // which updates the visual appearance of the app.
       items.remove(item);
       if (!completed) {
-        print("Completing");
         _itemSet.add(item);
         items.add(item);
       } else {
-        print("Making Undone");
         _itemSet.remove(item);
         items.insert(0, item);
       }
@@ -53,12 +46,13 @@ class _ToDoGoalAppState extends State<ToDoGoalApp> {
 
   void _handleNewItem(String itemText, TextEditingController textController) {
     setState(() {
-      print("Adding new item");
-      Item item = Item(
-          name:
-              itemText); // Error: switched to using itemText instead of string.
-      items.insert(0, item);
-      textController.clear();
+      if (itemText.isNotEmpty) {
+        Item item = Item(name: itemText);
+        items.insert(0, item);
+        textController.clear();
+      } else {
+        print("Item text cannot be empty");
+      }
     });
   }
 
@@ -83,11 +77,20 @@ class _ToDoGoalAppState extends State<ToDoGoalApp> {
   }
 
   void _handleNewGoal(
-      String goalText, String deadline, TextEditingController textcontroller) {
+      String goalText, String deadline, TextEditingController textController) {
+    // Convert the string input to a DateTime object
+    DateTime? parsedDeadline = DateTime.tryParse(deadline);
+
+    if (goalText.isEmpty || parsedDeadline == null) {
+      // Handle empty name or invalid date
+      print("Invalid goal name or deadline");
+      return;
+    }
+
     setState(() {
-      Goal goal = Goal(name: goalText, deadline: deadline);
+      Goal goal = Goal(name: goalText, deadline: parsedDeadline);
       goals.insert(0, goal);
-      textcontroller.clear();
+      textController.clear();
     });
   }
 
