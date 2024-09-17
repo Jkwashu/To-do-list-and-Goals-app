@@ -14,6 +14,12 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
   final TextEditingController _deadlineController = TextEditingController();
   String? _errorMessage;
 
+  // Method to validate the deadline format (YYYY-MM-DD)
+  bool _isValidDate(String input) {
+    DateTime? parsedDate = DateTime.tryParse(input);
+    return parsedDate != null && input.length == 10;
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -47,6 +53,12 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
                 _deadlineController.text.isEmpty) {
               setState(() {
                 _errorMessage = 'Please enter both a goal and a deadline.';
+              });
+              return;
+            }
+            if (!_isValidDate(_deadlineController.text)) {
+              setState(() {
+                _errorMessage = 'Please enter a valid date (YYYY-MM-DD).';
               });
               return;
             }

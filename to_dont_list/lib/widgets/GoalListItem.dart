@@ -44,10 +44,12 @@ class GoalListItem extends StatelessWidget {
           : null,
       leading: CircleAvatar(
         backgroundColor: _getColor(context),
-        child: Text(goal.name.substring(0, 1)), // Use first letter of goal name
+        child: Text(goal.name.isNotEmpty
+            ? goal.name.substring(0, 1) // Use first letter of goal name
+            : "?"),
       ),
       title: Text(
-        goal.name,
+        goal.name.isNotEmpty ? goal.name : 'Unnamed Goal',
         style: _getTextStyle(context),
       ),
     );
