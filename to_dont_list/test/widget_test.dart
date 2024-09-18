@@ -257,9 +257,11 @@ void main() {
       await tester.tap(find.text('Goals'));
       await tester.pumpAndSettle();
 
-      expect(find.byType(GoalListItem), findsNWidgets(1));
+      expect(find.byType(GoalListItem), findsOneWidget);
 
-      await tester.tap(find.byIcon(Icons.delete).first);
+      final deleteIcon = find.byIcon(Icons.delete);
+      expect(deleteIcon, findsOneWidget);
+      await tester.tap(deleteIcon);
       await tester.pumpAndSettle();
 
       expect(find.byType(GoalListItem), findsNothing);

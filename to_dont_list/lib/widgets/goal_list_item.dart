@@ -52,6 +52,10 @@ class GoalListItem extends StatelessWidget {
         goal.name.isNotEmpty ? goal.name : 'Unnamed Goal',
         style: _getTextStyle(context),
       ),
+      trailing: IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () => onDeleteGoal(goal),
+      ),
     );
   }
 }
