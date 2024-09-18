@@ -55,7 +55,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
             if (_goalController.text.isEmpty ||
                 _deadlineController.text.isEmpty) {
               setState(() {
-                _errorMessage = 'Please enter both a goal and a deadline.';
+                _errorMessage = "Please enter both a goal and a deadline.";
               });
               return;
             }

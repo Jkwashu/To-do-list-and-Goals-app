@@ -170,7 +170,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Check that the error message is still displayed
-      expect(find.text('Please enter both a goal and a deadline.'),
+      expect(find.text("Please enter both a goal and a deadline."),
           findsOneWidget);
     });
 
@@ -180,11 +180,17 @@ void main() {
       await tester
           .pumpWidget(const MaterialApp(home: Scaffold(body: ToDoGoalApp())));
 
+      // Navigate to the Goals tab
+      await tester.tap(find.text('Goals'));
+      await tester.pumpAndSettle();
+
+      // Open the dialog
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle(); // Open the dialog
+      await tester.pumpAndSettle();
 
       // Enter goal name but not deadline
-      await tester.enterText(find.byType(TextField).first, 'New Goal');
+      await tester.enterText(
+          find.byKey(const Key('goalTextField')), 'New Goal');
       await tester.pump();
 
       // Attempt to press Add without setting the deadline
@@ -192,6 +198,20 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify that error message is shown for missing deadline
+      expect(find.text("Please enter both a goal and a deadline."),
+          findsOneWidget);
+
+      // Clear the goal name and enter only the deadline
+      await tester.enterText(find.byKey(const Key('goalTextField')), '');
+      await tester.enterText(
+          find.byKey(const Key('deadlineTextField')), '2024-12-31');
+      await tester.pump();
+
+      // Attempt to press Add without setting the goal name
+      await tester.tap(find.byKey(const Key("OKButton")));
+      await tester.pumpAndSettle();
+
+      // Verify that error message is shown for missing goal name
       expect(find.text("Please enter both a goal and a deadline."),
           findsOneWidget);
     });
