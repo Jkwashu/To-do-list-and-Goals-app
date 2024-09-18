@@ -50,6 +50,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
       ),
       actions: [
         TextButton(
+          key: const Key("OKButton"),
           onPressed: () {
             if (_goalController.text.isEmpty ||
                 _deadlineController.text.isEmpty) {

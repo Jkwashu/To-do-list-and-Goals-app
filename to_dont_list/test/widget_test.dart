@@ -146,23 +146,32 @@ void main() {
     });
 
     // Test that goal input dialog throws error when no deadline is set
-    testWidgets('AddGoalDialog shows error for missing deadline',
-        (tester) async {
+    testWidgets('AddGoalDialog shows error for missing input', (tester) async {
       await tester
           .pumpWidget(const MaterialApp(home: Scaffold(body: ToDoGoalApp())));
 
+      await tester.tap(find.text('Goals'));
+      await tester.pumpAndSettle();
+
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle(); // Open the dialog
-
-      await tester.enterText(find.byType(TextField), 'New Goal');
-      await tester.pump();
 
       // Attempt to press OK without setting the deadline
       await tester.tap(find.byKey(const Key("OKButton")));
       await tester.pumpAndSettle();
 
       // Verify that error is shown for missing deadline
-      expect(find.text("Please set a deadline"), findsOneWidget);
+      expect(find.text("Please enter both a goal and a deadline."),
+          findsOneWidget);
+
+      await tester.enterText(
+          find.byKey(const Key('goalTextField')), 'Test Goal');
+      await tester.tap(find.byKey(const Key("OKButton")));
+      await tester.pumpAndSettle();
+
+      // Check that the error message is still displayed
+      expect(find.text('Please enter both a goal and a deadline.'),
+          findsOneWidget);
     });
 
     // Test that goal input dialog shows error for missing goal name or deadline
