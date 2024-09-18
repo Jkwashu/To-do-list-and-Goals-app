@@ -31,6 +31,10 @@ class GoalListItem extends StatelessWidget {
     );
   }
 
+  String _formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -52,6 +56,11 @@ class GoalListItem extends StatelessWidget {
         goal.name.isNotEmpty ? goal.name : 'Unnamed Goal',
         style: _getTextStyle(context),
       ),
+      subtitle: Text('Deadline: ${_formatDate(goal.deadline)}',
+          style: TextStyle(
+            fontSize: 12,
+            color: completed ? Colors.grey : Colors.black54,
+          )),
       trailing: IconButton(
         icon: Icon(Icons.delete),
         onPressed: () => onDeleteGoal(goal),
