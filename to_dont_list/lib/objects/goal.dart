@@ -2,7 +2,7 @@
 
 class Goal {
   String name;
-  DateTime deadline; // Might switch to use DateTime
+  DateTime deadline;
   bool completed;
   double progress;
 
@@ -11,7 +11,8 @@ class Goal {
     required this.deadline,
     this.completed = false,
     this.progress = 0.0,
-  });
+  }) : assert(
+            deadline.isAfter(DateTime.now()), 'Deadline must be in the future');
 
   //New abbrev method just for goals
   String abbrev() {

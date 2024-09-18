@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddGoalDialog extends StatefulWidget {
-  final Function(String, String, TextEditingController) onGoalAdded;
+  final Function(String, DateTime, TextEditingController) onGoalAdded;
 
   const AddGoalDialog({super.key, required this.onGoalAdded});
 
@@ -28,10 +28,12 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
+            key: const Key('goalTextField'),
             controller: _goalController,
             decoration: const InputDecoration(hintText: 'Goal Name'),
           ),
           TextField(
+            key: const Key('deadlineTextField'),
             controller: _deadlineController,
             decoration:
                 const InputDecoration(hintText: 'Deadline (YYYY-MM-DD)'),
@@ -62,6 +64,9 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
               });
               return;
             }
+            // Convert the valid string deadline to DateTime
+            DateTime parsedDeadline = DateTime.parse(_deadlineController.text);
+
             // Clear error if both fields are filled
             setState(() {
               _errorMessage = null;
@@ -69,7 +74,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
 
             widget.onGoalAdded(
               _goalController.text,
-              _deadlineController.text,
+              parsedDeadline,
               _goalController,
             );
             Navigator.of(context).pop();

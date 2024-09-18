@@ -3,27 +3,30 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:to_dont_list/main.dart';
 import 'package:to_dont_list/objects/goal.dart';
-import 'package:to_dont_list/widgets/GoalListItem.dart';
+import 'package:to_dont_list/widgets/goal_list_item.dart';
 
 // Test for Goal class
 void main() {
   group('Goal Class Tests', () {
     // Test the abbreviation method
     test('Goal abbreviation should be first letter', () {
-      var goal = Goal(name: "Finish Flutter project", deadline: "2024-12-31");
+      var goal = Goal(
+          name: "Finish Flutter project", deadline: DateTime(2024, 12, 31));
       expect(goal.abbrev(), "F");
     });
 
     // Test the abbreviation with an empty name
     test('Goal abbreviation with empty name should return empty string', () {
-      var goal = Goal(name: "", deadline: "2024-12-31");
+      var goal = Goal(name: "", deadline: DateTime(2024, 12, 31));
       expect(goal.abbrev(), "");
     });
 
     // Test creating a goal with missing deadline (should throw error)
-    test('Goal creation with empty deadline should throw error', () {
+    test('Goal creation with missing deadline should throw error', () {
       expect(
-        () => Goal(name: "Incomplete goal", deadline: ""),
+        () => Goal(
+            name: "Incomplete goal",
+            deadline: DateTime.now().subtract(const Duration(days: 1))),
         throwsA(isA<AssertionError>()),
       );
     });
@@ -33,16 +36,15 @@ void main() {
     // Test that tapping GoalListItem toggles completion status
     testWidgets('Tapping GoalListItem toggles completion status',
         (tester) async {
-      bool completed = false;
-      final goal = Goal(name: 'Test Goal', deadline: '2024-12-31');
+      final goal = Goal(name: 'Test Goal', deadline: DateTime(2024, 12, 31));
 
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(
           body: GoalListItem(
             goal: goal,
-            completed: completed,
-            onListChanged: (goal, isCompleted) {
-              completed = isCompleted;
+            completed: goal.completed,
+            onListChanged: (updatedGoal, isCompleted) {
+              goal.completed = isCompleted;
             },
             onDeleteGoal: (_) {},
           ),
@@ -50,7 +52,9 @@ void main() {
       ));
 
       await tester.tap(find.byType(ListTile));
-      expect(completed, true); // Verify completion status changed
+      await tester.pump();
+
+      expect(goal.completed, true); // Verify completion status changed
     });
     // Test that GoalListItem renders correctly
     testWidgets('GoalListItem has a text', (tester) async {
@@ -58,7 +62,8 @@ void main() {
           home: Scaffold(
               body: GoalListItem(
                   goal: Goal(
-                      name: "Finish Flutter project", deadline: "2024-12-31"),
+                      name: "Finish Flutter project",
+                      deadline: DateTime(2024, 12, 31)),
                   completed: false,
                   onListChanged: (Goal goal, bool completed) {},
                   onDeleteGoal: (Goal goal) {}))));
@@ -75,7 +80,8 @@ void main() {
           home: Scaffold(
               body: GoalListItem(
                   goal: Goal(
-                      name: "Finish Flutter project", deadline: "2024-12-31"),
+                      name: "Finish Flutter project",
+                      deadline: DateTime(2024, 12, 31)),
                   completed: false,
                   onListChanged: (Goal goal, bool completed) {},
                   onDeleteGoal: (Goal goal) {}))));
@@ -98,7 +104,8 @@ void main() {
           home: Scaffold(
               body: GoalListItem(
                   goal: Goal(
-                      name: "Finish Flutter project", deadline: "2024-12-31"),
+                      name: "Finish Flutter project",
+                      deadline: DateTime(2024, 12, 31)),
                   completed: true,
                   onListChanged: (Goal goal, bool completed) {},
                   onDeleteGoal: (Goal goal) {}))));
@@ -118,30 +125,24 @@ void main() {
       await tester
           .pumpWidget(const MaterialApp(home: Scaffold(body: ToDoGoalApp())));
 
-      // Ensure that the dialog is not showing initially
-      expect(find.byType(TextField), findsNothing);
+      await tester.tap(find.text('Goals'));
+      await tester.pumpAndSettle();
 
-      // Tap the FloatingActionButton to open the AddGoalDialog
+      expect(find.byType(FloatingActionButton), findsOneWidget);
       await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle(); // Wait for the dialog to open fully
+      await tester.pumpAndSettle();
 
-      // Ensure the dialog is displayed
-      expect(find.byType(TextField), findsOneWidget);
+      await tester.enterText(
+          find.byKey(const Key('goalTextField')), 'Complete Testing');
+      await tester.enterText(
+          find.byKey(const Key('deadlineTextField')), '2024-12-31');
+      await tester.pump();
 
-      // Enter text for the goal
-      await tester.enterText(find.byType(TextField), 'Complete Testing');
-      await tester.pump(); // Rebuild the widget to reflect the entered text
-
-      // Ensure the goal text has been entered correctly
-      expect(find.text('Complete Testing'), findsOneWidget);
-
-      // Tap the "OKButton" (ensure the key is correctly used in the widget)
       await tester.tap(find.byKey(const Key("OKButton")));
-      await tester
-          .pumpAndSettle(); // Wait for the dialog to close and list to update
+      await tester.pumpAndSettle();
 
-      // Verify that two goals are now present in the list (including the default goal)
       expect(find.byType(GoalListItem), findsNWidgets(2));
+      expect(find.text('Complete Testing'), findsOneWidget);
     });
 
     // Test that goal input dialog throws error when no deadline is set
@@ -202,6 +203,8 @@ void main() {
       // Enter a goal name
       await tester.enterText(
           find.byKey(const Key('goalTextField')), 'New Goal');
+      await tester.enterText(
+          find.byKey(const Key('deadlineTextField')), '2024-12-31');
       await tester.pump(); // Ensure the text is entered
 
       // Tap the "OKButton" to add the goal
@@ -218,7 +221,8 @@ void main() {
     // Test that long pressing a completed goal deletes it
     testWidgets('Long pressing a completed goal deletes it', (tester) async {
       bool deleted = false;
-      final goal = Goal(name: 'Completed Goal', deadline: '2024-12-31');
+      final goal =
+          Goal(name: 'Completed Goal', deadline: DateTime(2024, 12, 31));
 
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(

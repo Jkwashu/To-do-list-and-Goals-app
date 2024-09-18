@@ -4,8 +4,8 @@ import 'package:to_dont_list/objects/item.dart';
 import 'package:to_dont_list/objects/goal.dart';
 import 'package:to_dont_list/widgets/to_do_items.dart';
 import 'package:to_dont_list/widgets/to_do_dialog.dart';
-import 'package:to_dont_list/widgets/GoalListItem.dart';
-import 'package:to_dont_list/widgets/AddGoalDialog.dart';
+import 'package:to_dont_list/widgets/goal_list_item.dart';
+import 'package:to_dont_list/widgets/add_goal_dialog.dart';
 
 class ToDoGoalApp extends StatefulWidget {
   const ToDoGoalApp({super.key});
@@ -17,7 +17,9 @@ class ToDoGoalApp extends StatefulWidget {
 class _ToDoGoalAppState extends State<ToDoGoalApp> {
   final List<Item> items = [const Item(name: "add more goals")];
   final List<Goal> goals = [
-    Goal(name: "Finish Flutter project", deadline: DateTime(2024, 9, 16))
+    Goal(
+        name: "Finish Flutter project",
+        deadline: DateTime.now().add(const Duration(days: 30)))
   ];
   final _itemSet = <Item>{};
   final _goalSet = <Goal>{};
@@ -76,19 +78,10 @@ class _ToDoGoalAppState extends State<ToDoGoalApp> {
     });
   }
 
-  void _handleNewGoal(
-      String goalText, String deadline, TextEditingController textController) {
-    // Convert the string input to a DateTime object
-    DateTime? parsedDeadline = DateTime.tryParse(deadline);
-
-    if (goalText.isEmpty || parsedDeadline == null) {
-      // Handle empty name or invalid date
-      print("Invalid goal name or deadline");
-      return;
-    }
-
+  void _handleNewGoal(String goalText, DateTime deadline,
+      TextEditingController textController) {
     setState(() {
-      Goal goal = Goal(name: goalText, deadline: parsedDeadline);
+      Goal goal = Goal(name: goalText, deadline: deadline);
       goals.insert(0, goal);
       textController.clear();
     });
