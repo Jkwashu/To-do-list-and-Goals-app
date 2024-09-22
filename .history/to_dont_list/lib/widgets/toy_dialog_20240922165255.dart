@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 enum SideColor {
-  a('Autobot', Color.fromARGB(255, 255, 0, 0)), 
-  d('Decepticon', Color.fromARGB(255, 112, 79, 162)),
-  o('Other', Color.fromARGB(255, 128, 128, 128));
+  red(Colors.red), 
+  purple(Color.fromARGB(255, 136, 18, 182)),
+  grey(Color.fromARGB(255, 94, 94, 94));
 
-  const SideColor(this.label, this.rgbcolor);
-  final String label;
+  const SideColor(this.rgbcolor);
+
   final Color rgbcolor;
 }
 
 typedef ToyListAddedCallback = Function(
-    String value, Color color, TextEditingController textConroller);
+    String value, TextEditingController textConroller);
 
 class ToyDialog extends StatefulWidget {
   const ToyDialog({
@@ -28,12 +28,10 @@ class ToyDialog extends StatefulWidget {
 class _ToyDialogState extends State<ToyDialog> {
   // Dialog with text from https://www.appsdeveloperblog.com/alert-dialog-with-a-text-field-in-flutter/
   final TextEditingController _inputController = TextEditingController();
-  final TextEditingController _colorController = TextEditingController();
   final ButtonStyle noStyle = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.red);
   final ButtonStyle yesStyle = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.green);
-  SideColor? selectedColor;
 
   String valueText = "";
 
@@ -41,36 +39,15 @@ class _ToyDialogState extends State<ToyDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add a New Toy'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                valueText = value;
-              });
-            },
-            controller: _inputController,
-            decoration: const InputDecoration(hintText: "type toy name here"),
-          ),
-          DropdownMenu<SideColor>(
-            initialSelection: SideColor.a,
-            controller: _colorController,
-            label: const Text('Faction'),
-            onSelected: (SideColor? color) {
-              setState(() {
-                selectedColor = color;
-              });
-            },
-            dropdownMenuEntries: SideColor.values.map<DropdownMenuEntry<SideColor>>((SideColor color) {
-              return DropdownMenuEntry<SideColor>(
-                value: color,
-                label: color.label,
-              );
-            }).toList(),
-          ),
-        ]  
-      ), 
+      content: TextField(
+        onChanged: (value) {
+          setState(() {
+            valueText = value;
+          });
+        },
+        controller: _inputController,
+        decoration: const InputDecoration(hintText: "type something here"),
+      ),
       actions: <Widget>[
         ElevatedButton(
           key: const Key("CancelButton"),
@@ -93,7 +70,7 @@ class _ToyDialogState extends State<ToyDialog> {
               onPressed: value.text.isNotEmpty
                   ? () {
                       setState(() {
-                        widget.onListAdded(valueText, selectedColor!.rgbcolor, _inputController);
+                        widget.onListAdded(valueText, _inputController);
                         Navigator.pop(context);
                       });
                     }

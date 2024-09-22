@@ -13,7 +13,7 @@ class ToyList extends StatefulWidget {
 }
 
 class _ToyListState extends State<ToyList> {
-  final List<Toy> items = [Toy(name: "Optimus Prime", color:Color.fromARGB(255, 244, 57, 64))];
+  final List<Toy> items = [Toy(name: "Optimus Prime", color:Color.fromARGB(a, r, g, b))];
   final _itemSet = <Toy>{};
 
   void _handleListChanged(Toy item, bool completed) {
@@ -44,10 +44,10 @@ class _ToyListState extends State<ToyList> {
     });
   }
 
-  void _handleNewItem(String itemText, Color itemColor, TextEditingController textController) {
+  void _handleNewItem(String itemText, TextEditingController textController) {
     setState(() {
       print("Adding new item");
-      Toy item = Toy(name: itemText, color:itemColor);
+      Toy item = Toy(name: itemText, color:Color.red);
       items.insert(0, item);
       textController.clear();
     });

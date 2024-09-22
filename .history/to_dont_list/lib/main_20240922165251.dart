@@ -44,10 +44,10 @@ class _ToyListState extends State<ToyList> {
     });
   }
 
-  void _handleNewItem(String itemText, Color itemColor, TextEditingController textController) {
+  void _handleNewItem(String itemText, TextEditingController textController) {
     setState(() {
       print("Adding new item");
-      Toy item = Toy(name: itemText, color:itemColor);
+      Toy item = Toy(name: itemText, color:Color.red);
       items.insert(0, item);
       textController.clear();
     });
