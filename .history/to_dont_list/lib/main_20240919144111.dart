@@ -76,7 +76,7 @@ class _ToyListState extends State<ToyList> {
               showDialog(
                   context: context,
                   builder: (_) {
-                    return ToyDialog(onListAdded: _handleNewItem);
+                    return ToDoDialog(onListAdded: _handleNewItem);
                   });
             }));
   }

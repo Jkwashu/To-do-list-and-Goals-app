@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:to_dont_list/main.dart';
 import 'package:to_dont_list/objects/item.dart';
-import 'package:to_dont_list/widgets/toy_items.dart';
+import 'package:to_dont_list/widgets/to_do_items.dart';
 
 void main() {
   test('Item abbreviation should be first letter', () {
@@ -23,10 +23,10 @@ void main() {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
             body: ToyListItem(
-                toy: const Toy(name: "test"),
+                toy: const Item(name: "test"),
                 completed: true,
-                onListChanged: (Toy item, bool completed) {},
-                onDeleteItem: (Toy item) {}))));
+                onListChanged: (Item item, bool completed) {},
+                onDeleteItem: (Item item) {}))));
     final textFinder = find.text('test');
 
     // Use the `findsOneWidget` matcher provided by flutter_test to verify

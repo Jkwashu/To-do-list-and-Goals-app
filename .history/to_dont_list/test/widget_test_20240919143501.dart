@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:to_dont_list/main.dart';
 import 'package:to_dont_list/objects/item.dart';
-import 'package:to_dont_list/widgets/toy_items.dart';
+import 'package:to_dont_list/widgets/to_do_items.dart';
 
 void main() {
   test('Item abbreviation should be first letter', () {
@@ -22,11 +22,11 @@ void main() {
   testWidgets('ToDoListItem has a text', (tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-            body: ToyListItem(
-                toy: const Toy(name: "test"),
+            body: ToDoListItem(
+                toy: const Item(name: "test"),
                 completed: true,
-                onListChanged: (Toy item, bool completed) {},
-                onDeleteItem: (Toy item) {}))));
+                onListChanged: (Item item, bool completed) {},
+                onDeleteItem: (Item item) {}))));
     final textFinder = find.text('test');
 
     // Use the `findsOneWidget` matcher provided by flutter_test to verify
@@ -59,7 +59,7 @@ void main() {
   testWidgets('Default ToDoList has one item', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: ToyList()));
 
-    final listItemFinder = find.byType(ToyListItem);
+    final listItemFinder = find.byType(ToDoListItem);
 
     expect(listItemFinder, findsOneWidget);
   });
@@ -81,7 +81,7 @@ void main() {
     await tester.pump();
     expect(find.text("hi"), findsOneWidget);
 
-    final listItemFinder = find.byType(ToyListItem);
+    final listItemFinder = find.byType(ToDoListItem);
 
     expect(listItemFinder, findsNWidgets(2));
   });

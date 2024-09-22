@@ -2,17 +2,17 @@
 import 'package:flutter/material.dart';
 // import 'package:to_dont_list/objects/item.dart';
 import 'package:to_dont_list/objects/Toy.dart';
-import 'package:to_dont_list/widgets/toy_items.dart';
-import 'package:to_dont_list/widgets/toy_dialog.dart';
+import 'package:to_dont_list/widgets/to_do_items.dart';
+import 'package:to_dont_list/widgets/to_do_dialog.dart';
 
-class ToyList extends StatefulWidget {
-  const ToyList({super.key});
+class ToDoList extends StatefulWidget {
+  const ToDoList({super.key});
 
   @override
-  State createState() => _ToyListState();
+  State createState() => _ToDoListState();
 }
 
-class _ToyListState extends State<ToyList> {
+class _ToDoListState extends State<ToDoList> {
   final List<Toy> items = [Toy(name: "Optimus Prime", color:SideColor.red)];
   final _itemSet = <Toy>{};
 
@@ -62,7 +62,7 @@ class _ToyListState extends State<ToyList> {
         body: ListView(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           children: items.map((item) {
-            return ToyListItem(
+            return ToDoListItem(
               toy: item,
               completed: _itemSet.contains(item),
               onListChanged: _handleListChanged,
@@ -76,7 +76,7 @@ class _ToyListState extends State<ToyList> {
               showDialog(
                   context: context,
                   builder: (_) {
-                    return ToyDialog(onListAdded: _handleNewItem);
+                    return ToDoDialog(onListAdded: _handleNewItem);
                   });
             }));
   }
@@ -85,6 +85,6 @@ class _ToyListState extends State<ToyList> {
 void main() {
   runApp(const MaterialApp(
     title: 'Transformer Collector',
-    home: ToyList(),
+    home: ToDoList(),
   ));
 }

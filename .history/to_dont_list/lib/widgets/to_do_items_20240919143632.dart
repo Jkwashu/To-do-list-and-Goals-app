@@ -4,8 +4,8 @@ import 'package:to_dont_list/objects/Toy.dart';
 typedef ToDoListChangedCallback = Function(Toy toy, bool completed);
 typedef ToDoListRemovedCallback = Function(Toy toy);
 
-class ToDoListItem extends StatelessWidget {
-  ToDoListItem(
+class ToyListItem extends StatelessWidget {
+  ToyListItem(
       {required this.toy,
       required this.completed,
       required this.onListChanged,

@@ -11,13 +11,13 @@ enum SideColor {
 }
 
 class Toy {
-  Toy({required this.name, required this.color});
+  const Toy({required this.name, required this.color});
 
   final String name;
   final SideColor color;
-  bool got = false;
+  // // bool got = false;
 
-  void isGot(bool b) {
-    got = b;
-  }
+  // void isGot(bool b) {
+  //   got = b;
+  // }
 }
