@@ -33,7 +33,7 @@ class _ToyDialogState extends State<ToyDialog> {
       textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.red);
   final ButtonStyle yesStyle = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.green);
-  SideColor? selectedColor = SideColor.a;
+  SideColor? selectedColor = SideColor.o;
 
   String valueText = "";
 

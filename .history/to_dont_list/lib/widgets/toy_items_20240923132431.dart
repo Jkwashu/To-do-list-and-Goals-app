@@ -34,6 +34,7 @@ class ToyListItem extends StatelessWidget {
 
     return const TextStyle(
       color: Colors.black54,
+      decoration: TextDecoration.lineThrough,
     );
   }
 
@@ -48,7 +49,7 @@ class ToyListItem extends StatelessWidget {
               onDeleteItem(toy);
             }
           : null,
-      leading: got ? null : CircleAvatar(
+      leading: CircleAvatar(
         backgroundColor: toy.color,
       ),
       title: Text(

@@ -64,7 +64,7 @@ class _ToyListState extends State<ToyList> {
           children: items.map((item) {
             return ToyListItem(
               toy: item,
-              got: _itemSet.contains(item),
+              completed: _itemSet.contains(item),
               onListChanged: _handleListChanged,
               onDeleteItem: _handleDeleteItem,
             );

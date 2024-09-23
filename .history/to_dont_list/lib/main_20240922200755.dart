@@ -13,7 +13,7 @@ class ToyList extends StatefulWidget {
 }
 
 class _ToyListState extends State<ToyList> {
-  final List<Toy> items = [Toy(name: "Legacy Core Optimus Prime", color: SideColor.a.rgbcolor)];
+  final List<Toy> items = [Toy(name: "Optimus Prime", color: SideColor.a.rgbcolor)];
   final _itemSet = <Toy>{};
 
   void _handleListChanged(Toy item, bool completed) {
@@ -64,7 +64,7 @@ class _ToyListState extends State<ToyList> {
           children: items.map((item) {
             return ToyListItem(
               toy: item,
-              got: _itemSet.contains(item),
+              completed: _itemSet.contains(item),
               onListChanged: _handleListChanged,
               onDeleteItem: _handleDeleteItem,
             );
