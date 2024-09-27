@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:to_dont_list/objects/Toy.dart';
+import 'package:to_dont_list/objects/toy.dart';
 
 typedef ToyListChangedCallback = Function(Toy toy, bool completed);
 typedef ToyListRemovedCallback = Function(Toy toy);
