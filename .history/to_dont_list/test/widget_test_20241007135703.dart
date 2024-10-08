@@ -66,4 +66,35 @@ void main() {
     expect(circ.backgroundColor, SideColor.a.rgbcolor); 
   });
 
+  // testWidgets('ToyDialog has a DropDownMenu', (tester) async {
+  //   await tester.pumpWidget(const MaterialApp(home: ToyList()));
+  //   await tester.tap(find.byType(FloatingActionButton));
+  //   await tester.pump();
+  //   final DropDownFinder = find.byType(DropDownMenu<SideColor>());
+  //   expect(DropDownFinder, findsOneWidget);
+  // });
+
+  // testWidgets('Clicking and Typing adds item to ToyList', (tester) async {
+  //   await tester.pumpWidget(const MaterialApp(home: ToyList()));
+
+  //   expect(find.byType(TextField), findsNothing);
+
+  //   await tester.tap(find.byType(FloatingActionButton));
+  //   await tester.pump(); // Pump after every action to rebuild the widgets
+  //   expect(find.text("hi"), findsNothing);
+
+  //   await tester.enterText(find.byType(TextField), 'hi');
+  //   await tester.pump();
+  //   expect(find.text("hi"), findsOneWidget);
+
+  //   await tester.tap(find.byKey(const Key("OKButton")));
+  //   await tester.pump();
+  //   expect(find.text("hi"), findsOneWidget);
+
+  //   final listItemFinder = find.byType(ToyListItem);
+
+  //   expect(listItemFinder, findsNWidgets(2));
+  // });
+
+  // One to test the tap and press actions on the items?
 }
