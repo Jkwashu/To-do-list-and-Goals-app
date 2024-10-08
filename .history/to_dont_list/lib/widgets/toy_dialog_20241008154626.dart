@@ -53,7 +53,7 @@ class _ToyDialogState extends State<ToyDialog> {
             controller: _inputController,
             decoration: const InputDecoration(hintText: "Type toy name here"),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           DropdownMenu<SideColor>(
             initialSelection: SideColor.a,
             controller: _colorController,
