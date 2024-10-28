@@ -13,63 +13,108 @@ class ToyList extends StatefulWidget {
 }
 
 class _ToyListState extends State<ToyList> {
-  final List<Toy> items = [Toy(name: "Legacy Core Optimus Prime", color: SideColor.a.rgbcolor)];
-  final _itemSet = <Toy>{};
+  // Created 2 Lists of Toys owned and wishlisted 
+  final List<Toy> ownedToys = [Toy(name: "Legacy Core Optimus Prime", color: SideColor.a.rgbcolor)];
+  final List<Toy> wishlistToys = [Toy(name: "Masterpiece Bumblebee", color: SideColor.a.rgbcolor)];
 
-  void _handleListChanged(Toy item, bool completed) {
+  // edited _handleListChanged so it can remove toy from wishlist to owned
+  // if the toy is thrown or destroyed clicking on it will remove it from owned list
+  void _handleListChanged(Toy item, bool isNotOwned) {
     setState(() {
-      // When a user changes what's in the list, you need
-      // to change _itemSet inside a setState call to
-      // trigger a rebuild.
-      // The framework then calls build, below,
-      // which updates the visual appearance of the app.
-
-      items.remove(item);
-      if (!completed) {
-        print("Completing");
-        _itemSet.add(item);
-        items.add(item);
+      if (isNotOwned) {
+        ownedToys.remove(item);
       } else {
-        print("Making Undone");
-        _itemSet.remove(item);
-        items.insert(0, item);
+        wishlistToys.remove(item);
+        ownedToys.insert(0, item);
       }
     });
   }
 
-  void _handleDeleteItem(Toy item) {
+  void _handleDeleteItem(Toy item, bool isOwned) {
     setState(() {
-      print("Deleting item");
-      items.remove(item);
+      if (isOwned) {
+        ownedToys.remove(item);
+      } else {
+        wishlistToys.remove(item);
+      }
     });
   }
 
   void _handleNewItem(String itemText, Color itemColor, TextEditingController textController) {
     setState(() {
-      print("Adding new item");
+      print("Adding toy");
       Toy item = Toy(name: itemText, color:itemColor);
-      items.insert(0, item);
+      wishlistToys.insert(0, item);
       textController.clear();
     });
   }
 
+  // added another Listview in children
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Transformers Collection'),
         ),
-        body: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          children: items.map((item) {
-            return ToyListItem(
-              toy: item,
-              got: _itemSet.contains(item),
-              onListChanged: _handleListChanged,
-              onDeleteItem: _handleDeleteItem,
-            );
-          }).toList(),
-        ),
+        body: Column(
+        children: [
+          // Owned Toys List displayed on screen
+          Expanded(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Owned Toys',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    children: ownedToys.map((toy) {
+                      return ToyListItem(
+                        toy: toy,
+                        got: true, // Already owned
+                        onListChanged: (toy, _) => _handleListChanged(toy, true),
+                        onDeleteItem: (toy) => _handleDeleteItem(toy, true),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1.0, color: Colors.black),
+          // Wishlist Toys list displayed on screen 
+          Expanded(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Wishlist Toys',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    children: wishlistToys.map((toy) {
+                      return ToyListItem(
+                        toy: toy,
+                        got: false, // Not owned in wishlist
+                        onListChanged: (toy, _) => _handleListChanged(toy, false),
+                        onDeleteItem: (toy) => _handleDeleteItem(toy, false),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
