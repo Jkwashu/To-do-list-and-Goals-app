@@ -23,6 +23,7 @@ class _ToyListState extends State<ToyList> {
     setState(() {
       if (isNotOwned) {
         ownedToys.remove(item);
+        wishlistToys.insert(0, item);
       } else {
         wishlistToys.remove(item);
         ownedToys.insert(0, item);
