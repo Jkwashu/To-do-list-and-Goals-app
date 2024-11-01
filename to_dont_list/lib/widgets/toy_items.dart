@@ -19,22 +19,11 @@ class ToyListItem extends StatelessWidget {
   final ToyListRemovedCallback onDeleteItem;
 
   Color _getColor(BuildContext context) {
-    // The theme depends on the BuildContext because different
-    // parts of the tree can have different themes.
-    // The BuildContext indicates where the build is
-    // taking place and therefore which theme to use.
-
-    return got //
-        ? Colors.black54
-        : Theme.of(context).primaryColor;
+    return toy.color;
   }
 
   TextStyle? _getTextStyle(BuildContext context) {
-    if (!got) return null;
-
-    return const TextStyle(
-      color: Colors.black54,
-    );
+    return null;
   }
 
   @override
@@ -48,7 +37,7 @@ class ToyListItem extends StatelessWidget {
               onDeleteItem(toy);
             }
           : null,
-      leading: got ? null : CircleAvatar(
+      leading: CircleAvatar(
         backgroundColor: toy.color,
       ),
       title: Text(
