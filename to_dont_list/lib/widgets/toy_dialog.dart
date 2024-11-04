@@ -3,7 +3,7 @@ import 'package:to_dont_list/objects/toy.dart';
 
 
 typedef ToyListAddedCallback = Function(
-    String value, Color color, TextEditingController textConroller);
+    String value, Faction faction, TextEditingController textConroller);
 
 class ToyDialog extends StatefulWidget {
   const ToyDialog({
@@ -86,7 +86,7 @@ class _ToyDialogState extends State<ToyDialog> {
               onPressed: value.text.isNotEmpty
                   ? () {
                       setState(() {
-                        widget.onListAdded(valueText, selectedFaction!.rgbcolor, _inputController);
+                        widget.onListAdded(valueText, selectedFaction!, _inputController);
                         Navigator.pop(context);
                       });
                     }
