@@ -39,6 +39,7 @@ class ToyListItem extends StatelessWidget {
           : null,
       leading: CircleAvatar(
         backgroundColor: toy.color,
+        foregroundImage: toy.faction.image.image,
       ),
       title: Text(
         toy.name,
