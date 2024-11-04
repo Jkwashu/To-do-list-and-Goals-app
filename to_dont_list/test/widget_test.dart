@@ -22,7 +22,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
             body: ToyListItem(
-                toy: Toy(name: "test", color: SideColor.a.rgbcolor),
+                toy: Toy(name: "test", color: Faction.a.rgbcolor, faction: Faction.a),
                 got: true,
                 onListChanged: (Toy item, bool got) {},
                 onDeleteItem: (Toy item) {}))));
@@ -33,22 +33,26 @@ void main() {
     expect(textFinder, findsOneWidget);
   });
 
-  testWidgets('ToyItem has a Circle Avatar with a color to match',
-      (tester) async {
+  testWidgets('ToyItem has a Circle Avatar with a color and image to match', (tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
             body: ToyListItem(
-                toy: Toy(name: "test", color: SideColor.o.rgbcolor),
+                toy: Toy(name: "test", color: Faction.o.rgbcolor, faction: Faction.o),
                 got: false,
                 onListChanged: (Toy item, bool got) {},
                 onDeleteItem: (Toy item) {}))));
+  
     final avatarFinder = find.byType(CircleAvatar);
 
     CircleAvatar circ = tester.firstWidget(avatarFinder);
 
-    // Use the `findsOneWidget` matcher provided by flutter_test to verify
+    // Use the findsOneWidget matcher provided by flutter_test to verify
     // that the Text widgets appear exactly once in the widget tree.
-    expect(circ.backgroundColor, SideColor.o.rgbcolor);
+    expect(circ.backgroundColor, Faction.o.rgbcolor);
+  
+    // Check that the foreground image is of type AssetImage and has the correct asset path
+    final foregroundImage = circ.foregroundImage as AssetImage;
+    expect(foregroundImage.assetName, 'assets/images/QuestionMark.png');
   });
 
   testWidgets('Default ToyList has one item', (tester) async {
@@ -63,7 +67,7 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: ToyList()));
     final avatarFinder = find.byType(CircleAvatar);
     CircleAvatar circ = tester.firstWidget(avatarFinder);
-    expect(circ.backgroundColor, SideColor.a.rgbcolor); 
+    expect(circ.backgroundColor, Faction.a.rgbcolor); 
   });
 
   testWidgets('ToyDialog has a DropDownMenu', (tester) async {
