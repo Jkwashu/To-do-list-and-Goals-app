@@ -17,3 +17,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/AutobotLogo.png
+    - assets/images/DecepteconLogo.png
+    - assets/images/QuestionMark.png

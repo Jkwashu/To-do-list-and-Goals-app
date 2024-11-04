@@ -14,8 +14,8 @@ class ToyList extends StatefulWidget {
 
 class _ToyListState extends State<ToyList> {
   // Created 2 Lists of Toys owned and wishlisted 
-  final List<Toy> ownedToys = [Toy(name: "Legacy Core Optimus Prime", color: SideColor.a.rgbcolor)];
-  final List<Toy> wishlistToys = [Toy(name: "Masterpiece Bumblebee", color: SideColor.a.rgbcolor)];
+  final List<Toy> ownedToys = [Toy(name: "Legacy Core Optimus Prime", color: Faction.a.rgbcolor, faction: Faction.a)];
+  final List<Toy> wishlistToys = [Toy(name: "Masterpiece Bumblebee", color: Faction.a.rgbcolor, faction: Faction.a)];
 
   // edited _handleListChanged so it can remove toy from wishlist to owned
   // if the toy is thrown or destroyed clicking on it will remove it from owned list
@@ -41,10 +41,10 @@ class _ToyListState extends State<ToyList> {
     });
   }
 
-  void _handleNewItem(String itemText, Color itemColor, TextEditingController textController) {
+  void _handleNewItem(String itemText, Faction itemFaction, TextEditingController textController) {
     setState(() {
       print("Adding toy");
-      Toy item = Toy(name: itemText, color:itemColor);
+      Toy item = Toy(name: itemText, color:itemFaction.rgbcolor, faction:itemFaction);
       wishlistToys.insert(0, item);
       textController.clear();
     });
