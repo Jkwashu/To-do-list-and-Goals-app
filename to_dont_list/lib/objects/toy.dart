@@ -16,6 +16,14 @@ enum Faction {
 
 enum ToyClass { leader, voyager, deluxe, core, masterpiece, other }
 
+enum ToySortOption {
+  name,
+  faction,
+  toyClass,
+  toyline,
+  releaseYear,
+}
+
 class Toy {
   Toy({
     required this.name,
@@ -53,12 +61,4 @@ class Toy {
         return name.toLowerCase();
     }
   }
-}
-
-enum ToySortOption {
-  name,
-  faction,
-  toyClass,
-  toyline,
-  releaseYear,
 }

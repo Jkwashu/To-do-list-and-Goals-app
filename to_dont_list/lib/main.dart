@@ -1,4 +1,3 @@
-// main.dart
 // Started with https://docs.flutter.dev/development/ui/widgets-intro
 import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/toy.dart';

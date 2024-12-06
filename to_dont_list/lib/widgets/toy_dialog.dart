@@ -48,6 +48,11 @@ class _ToyDialogState extends State<ToyDialog> {
           children: <Widget>[
             TextField(
               controller: _nameController,
+              onChanged: (value) {
+                setState(() {
+                  // Update state to trigger rebuild
+                });
+              },
               decoration: const InputDecoration(labelText: 'Toy Name'),
             ),
             const SizedBox(height: 12),
@@ -84,20 +89,40 @@ class _ToyDialogState extends State<ToyDialog> {
             ),
             TextField(
               controller: _toylineController,
+              onChanged: (value) {
+                setState(() {
+                  // Update state to trigger rebuild
+                });
+              },
               decoration: const InputDecoration(labelText: 'Toy Line'),
             ),
             TextField(
               controller: _yearController,
+              onChanged: (value) {
+                setState(() {
+                  // Update state to trigger rebuild
+                });
+              },
               decoration: const InputDecoration(labelText: 'Release Year'),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _priceController,
+              onChanged: (value) {
+                setState(() {
+                  // Update state to trigger rebuild
+                });
+              },
               decoration: const InputDecoration(labelText: 'Price (Optional)'),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _notesController,
+              onChanged: (value) {
+                setState(() {
+                  // Update state to trigger rebuild
+                });
+              },
               decoration: const InputDecoration(labelText: 'Notes (Optional)'),
               maxLines: 2,
             ),
@@ -120,7 +145,9 @@ class _ToyDialogState extends State<ToyDialog> {
               style: yesStyle,
               onPressed: value.text.isNotEmpty &&
                       _toylineController.text.isNotEmpty &&
-                      _yearController.text.isNotEmpty
+                      _yearController.text.isNotEmpty &&
+                      selectedFaction != null &&
+                      selectedClass != null
                   ? () {
                       widget.onListAdded(
                         _nameController.text,
