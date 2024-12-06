@@ -22,6 +22,34 @@ class _ToyListState extends State<ToyList> {
         faction: Faction.a,
         toyClass: ToyClass.core,
         toyline: "Legacy",
+        releaseYear: 2022),
+    Toy(
+        name: "Studio Series Ironhide",
+        color: Faction.a.rgbcolor,
+        faction: Faction.a,
+        toyClass: ToyClass.voyager,
+        toyline: "Studio Series",
+        releaseYear: 2023),
+    Toy(
+        name: "Legacy Skywarp",
+        color: Faction.d.rgbcolor,
+        faction: Faction.d,
+        toyClass: ToyClass.deluxe,
+        toyline: "Legacy",
+        releaseYear: 2023),
+    Toy(
+        name: "Masterpiece Soundwave",
+        color: Faction.d.rgbcolor,
+        faction: Faction.d,
+        toyClass: ToyClass.masterpiece,
+        toyline: "Masterpiece",
+        releaseYear: 2019),
+    Toy(
+        name: "Core Ravage",
+        color: Faction.d.rgbcolor,
+        faction: Faction.d,
+        toyClass: ToyClass.core,
+        toyline: "Legacy",
         releaseYear: 2022)
   ];
 
@@ -32,6 +60,27 @@ class _ToyListState extends State<ToyList> {
         faction: Faction.a,
         toyClass: ToyClass.masterpiece,
         toyline: "Masterpiece",
+        releaseYear: 2023),
+    Toy(
+        name: "Legacy Leader Thundercracker",
+        color: Faction.d.rgbcolor,
+        faction: Faction.d,
+        toyClass: ToyClass.leader,
+        toyline: "Legacy",
+        releaseYear: 2024),
+    Toy(
+        name: "Studio Series Hot Rod",
+        color: Faction.a.rgbcolor,
+        faction: Faction.a,
+        toyClass: ToyClass.deluxe,
+        toyline: "Studio Series",
+        releaseYear: 2024),
+    Toy(
+        name: "Weaponizer Megatron",
+        color: Faction.d.rgbcolor,
+        faction: Faction.d,
+        toyClass: ToyClass.voyager,
+        toyline: "Legacy",
         releaseYear: 2023)
   ];
 
