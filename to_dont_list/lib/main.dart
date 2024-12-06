@@ -1,6 +1,6 @@
+// main.dart
 // Started with https://docs.flutter.dev/development/ui/widgets-intro
 import 'package:flutter/material.dart';
-// import 'package:to_dont_list/objects/item.dart';
 import 'package:to_dont_list/objects/toy.dart';
 import 'package:to_dont_list/widgets/toy_items.dart';
 import 'package:to_dont_list/widgets/toy_dialog.dart';
@@ -13,9 +13,28 @@ class ToyList extends StatefulWidget {
 }
 
 class _ToyListState extends State<ToyList> {
-  // Created 2 Lists of Toys owned and wishlisted 
-  final List<Toy> ownedToys = [Toy(name: "Legacy Core Optimus Prime", color: Faction.a.rgbcolor, faction: Faction.a)];
-  final List<Toy> wishlistToys = [Toy(name: "Masterpiece Bumblebee", color: Faction.a.rgbcolor, faction: Faction.a)];
+  ToySortOption _currentSortOption = ToySortOption.name;
+
+  // Created 2 Lists of Toys owned and wishlisted
+  final List<Toy> ownedToys = [
+    Toy(
+        name: "Legacy Core Optimus Prime",
+        color: Faction.a.rgbcolor,
+        faction: Faction.a,
+        toyClass: ToyClass.core,
+        toyline: "Legacy",
+        releaseYear: 2022)
+  ];
+
+  final List<Toy> wishlistToys = [
+    Toy(
+        name: "Masterpiece Bumblebee",
+        color: Faction.a.rgbcolor,
+        faction: Faction.a,
+        toyClass: ToyClass.masterpiece,
+        toyline: "Masterpiece",
+        releaseYear: 2023)
+  ];
 
   // edited _handleListChanged so it can remove toy from wishlist to owned
   // if the toy is thrown or destroyed clicking on it will remove it from owned list
@@ -41,12 +60,40 @@ class _ToyListState extends State<ToyList> {
     });
   }
 
-  void _handleNewItem(String itemText, Faction itemFaction, TextEditingController textController) {
+  void _handleNewItem(
+      String name,
+      Faction faction,
+      ToyClass toyClass,
+      String toyline,
+      int releaseYear,
+      double? price,
+      String? notes,
+      TextEditingController controller) {
     setState(() {
       print("Adding toy");
-      Toy item = Toy(name: itemText, color:itemFaction.rgbcolor, faction:itemFaction);
-      wishlistToys.insert(0, item);
-      textController.clear();
+      final toy = Toy(
+        name: name,
+        color: faction.rgbcolor,
+        faction: faction,
+        toyClass: toyClass,
+        toyline: toyline,
+        releaseYear: releaseYear,
+        price: price,
+        notes: notes,
+      );
+      wishlistToys.insert(0, toy);
+      controller.clear();
+    });
+  }
+
+  void _sortToys() {
+    setState(() {
+      ownedToys.sort((a, b) => a
+          .getSortKey(_currentSortOption)
+          .compareTo(b.getSortKey(_currentSortOption)));
+      wishlistToys.sort((a, b) => a
+          .getSortKey(_currentSortOption)
+          .compareTo(b.getSortKey(_currentSortOption)));
     });
   }
 
@@ -54,10 +101,43 @@ class _ToyListState extends State<ToyList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Transformers Collection'),
-        ),
-        body: Column(
+      appBar: AppBar(
+        title: const Text('Transformers Collection'),
+        actions: [
+          PopupMenuButton<ToySortOption>(
+            onSelected: (ToySortOption result) {
+              setState(() {
+                _currentSortOption = result;
+                _sortToys();
+              });
+            },
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<ToySortOption>>[
+              const PopupMenuItem<ToySortOption>(
+                value: ToySortOption.name,
+                child: Text('Sort by Name'),
+              ),
+              const PopupMenuItem<ToySortOption>(
+                value: ToySortOption.faction,
+                child: Text('Sort by Faction'),
+              ),
+              const PopupMenuItem<ToySortOption>(
+                value: ToySortOption.toyClass,
+                child: Text('Sort by Class'),
+              ),
+              const PopupMenuItem<ToySortOption>(
+                value: ToySortOption.toyline,
+                child: Text('Sort by Toy Line'),
+              ),
+              const PopupMenuItem<ToySortOption>(
+                value: ToySortOption.releaseYear,
+                child: Text('Sort by Release Year'),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: Column(
         children: [
           // Owned Toys List displayed on screen
           Expanded(
@@ -77,7 +157,8 @@ class _ToyListState extends State<ToyList> {
                       return ToyListItem(
                         toy: toy,
                         got: true, // Already owned
-                        onListChanged: (toy, _) => _handleListChanged(toy, true),
+                        onListChanged: (toy, _) =>
+                            _handleListChanged(toy, true),
                         onDeleteItem: (toy) => _handleDeleteItem(toy, true),
                       );
                     }).toList(),
@@ -87,7 +168,7 @@ class _ToyListState extends State<ToyList> {
             ),
           ),
           const Divider(height: 1.0, color: Colors.black),
-          // Wishlist Toys list displayed on screen 
+          // Wishlist Toys list displayed on screen
           Expanded(
             child: Column(
               children: [
@@ -105,7 +186,8 @@ class _ToyListState extends State<ToyList> {
                       return ToyListItem(
                         toy: toy,
                         got: false, // Not owned in wishlist
-                        onListChanged: (toy, _) => _handleListChanged(toy, false),
+                        onListChanged: (toy, _) =>
+                            _handleListChanged(toy, false),
                         onDeleteItem: (toy) => _handleDeleteItem(toy, false),
                       );
                     }).toList(),
@@ -116,15 +198,16 @@ class _ToyListState extends State<ToyList> {
           ),
         ],
       ),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (_) {
-                    return ToyDialog(onListAdded: _handleNewItem);
-                  });
-            }));
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (_) {
+                  return ToyDialog(onListAdded: _handleNewItem);
+                });
+          }),
+    );
   }
 }
 
