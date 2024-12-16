@@ -90,6 +90,7 @@ class _ToDoGoalAppState extends State<ToDoGoalApp> {
   // Render body based on selected tab
   Widget _buildBody() {
     if (_selectedIndex == 0) {
+      // To-Do Items
       return ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: items.map((item) {
@@ -102,19 +103,55 @@ class _ToDoGoalAppState extends State<ToDoGoalApp> {
         }).toList(),
       );
     } else {
+      // Goals 
+      final DateTime now = DateTime.now();
+      final List<Goal> longTermGoals = goals
+          .where((goal) => goal.deadline.isAfter(now.add(const Duration(days: 30))))
+          .toList();
+      final List<Goal> shortTermGoals = goals
+          .where((goal) => !goal.deadline.isAfter(now.add(const Duration(days: 30))))
+          .toList();
+
       return ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        children: goals.map((goal) {
-          return GoalListItem(
-            goal: goal,
-            completed: _goalSet.contains(goal),
-            onListChanged: _handleGoalListChanged,
-            onDeleteGoal: _handleDeleteGoal,
-          );
-        }).toList(),
+        children: [
+          if (shortTermGoals.isNotEmpty)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Short-Term Goals',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ...shortTermGoals.map((goal) {
+            return GoalListItem(
+              goal: goal,
+              completed: _goalSet.contains(goal),
+              onListChanged: _handleGoalListChanged,
+              onDeleteGoal: _handleDeleteGoal,
+            );
+          }),
+          if (longTermGoals.isNotEmpty)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Long-Term Goals',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ...longTermGoals.map((goal) {
+            return GoalListItem(
+              goal: goal,
+              completed: _goalSet.contains(goal),
+              onListChanged: _handleGoalListChanged,
+              onDeleteGoal: _handleDeleteGoal,
+            );
+          }),
+        ],
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
